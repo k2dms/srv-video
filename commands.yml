@@ -1,0 +1,64 @@
+- hosts: ubuntu_servers
+  become: yes
+  tasks:
+#   - name: Установить пакеты
+#     apt:
+#       name: "{{ packages }}"
+#       state: present
+
+#    - name: Настройка сетевых параметров
+#      command: >
+#        sudo ifconfig {{ network_interface }} {{ ip_address }} netmask {{ netmask }}
+#        && sudo route add default gw {{ gateway }} {{ network_interface }}
+#        && sudo sed -i 's/search .*/search {{ dns_search }}/' /etc/resolv.conf
+#        && sudo sed -i 's/nameserver .*/nameserver {{ dns_nameservers[0] }}/' /etc/resolv.conf
+#        && sudo sed -i '1inameserver {{ dns_nameservers[1] }}' /etc/resolv.conf
+#      args:
+#        executable: /bin/bash
+
+#    - name: Установка Zabbix агента
+#      command: wget -O /tmp/zabbix-release.deb "{{ zabbix_agent_url }}"
+#      args:
+#        creates: /tmp/zabbix-release.deb
+#
+#    - name: Установка Zabbix агента - часть 2
+#      command: dpkg -i /tmp/zabbix-release.deb
+#      args:
+#        creates: /etc/apt/sources.list.d/zabbix.list
+#
+#    - name: Обновление списка пакетов
+#      apt:
+#        update_cache: yes
+#
+#    - name: Установка Zabbix агента - часть 3
+#      apt:
+#        name: zabbix-agent
+#        state: present
+#
+##    - name: Клонирование репозитория Git
+##      git:
+##        repo: "{{ git_repo }}"
+##        dest: "/home/ubuntu/exacqvisionserverpackage"
+#
+#    - name: Установка зависимостей для exacqVisionServer
+#      apt:
+#        name: "{{ item }}"
+#        state: present
+#      loop: "{{ exacqvision_dependencies }}"
+
+  #  - name: Установка exacqVisionServer пакета
+  #    command: dpkg -i "{{ exacqvision_package }}"
+
+    - name: Копирование файлов в каталог /usr/local/exacq/server/
+      copy:
+        src: "/home/ubuntu/exacq_initial/"
+        dest: "/usr/local/exacq/server/"
+        owner: root
+        group: root
+        mode: '0755'
+        remote_src: yes
+
+    - name: Перезапуск службы edvrserver
+      service:
+        name: edvrserver
+        state: restarted
