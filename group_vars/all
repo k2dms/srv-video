@@ -1,0 +1,59 @@
+network_interface: eth0
+ip_address: 192.168.222.207
+netmask: 255.255.255.0
+gateway: 192.168.222.1
+dns_search: eurostil.ru
+dns_nameservers:
+  - 192.168.0.1
+proxy_url: "http://srv-proxy.eurostil.ru:3366"
+root_password: "RfvthysqIfh13" # Замените на ваш безопасный пароль
+packages:
+  - nano
+  - sysstat
+  - iftop
+  - htop
+  - iperf
+  - tcpdump
+  - dmidecode
+  - smartmontools
+  - mlocate
+  - pv
+  - hdparm
+  - ntp
+  - wget
+  - dnsutils
+  - lsof
+  - mtr
+  - net-tools
+  - pciutils
+  - acct
+  - rsync
+  - at
+  - attr
+  - python-setuptools
+  - strace
+  - traceroute
+  - unzip
+  - zip
+  - usbutils
+  - git
+  - telnet
+  - vim
+  - gdisk
+zabbix_agent_url: "http://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.0-1+xenial_all.deb"
+exacqvision_dependencies:
+  - libnss3-1d
+  - libnspr4-0d
+  - gcc-4.8-base
+  - libcap2
+  - libdaemon0
+  - libedit2
+  - libexpat1
+  - libopts25
+  - libssl0.9.8
+  - libssl1.0.0
+  - libstdc++6
+  - libtinfo5
+  - ntp
+exacqvision_git_repo: "https://srv-glory.eurostil.ru/dmitry.shelokov/exacqvisionserverpackage.git"
+exacqvision_server_dir: "/usr/local/exacq/server/"
