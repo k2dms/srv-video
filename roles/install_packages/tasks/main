@@ -1,0 +1,22 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install necessary packages
+  apt:
+    name: "{{ packages }}"
+    state: present
+  ignore_errors: yes
+
+- name: Ensure sysstat is enabled
+  replace:
+    path: /etc/default/sysstat
+    regexp: 'ENABLED="false"'
+    replace: 'ENABLED="true"'
+
+- name: Start sysstat service
+  service:
+    name: sysstat
+    state: started
+    enabled: yes
