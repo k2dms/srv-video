@@ -1,0 +1,40 @@
+---
+- name: Backup current network configuration
+  copy:
+    src: /etc/network/interfaces
+    dest: /etc/network/interfaces.bak
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Configure network interface
+  template:
+    src: interfaces.j2
+    dest: /etc/network/interfaces
+  notify: Restart networking
+
+- name: Ensure resolvconf is installed
+  apt:
+    name: resolvconf
+    state: present
+
+- name: Update DNS configuration in resolvconf base file
+  lineinfile:
+    path: /etc/resolvconf/resolv.conf.d/base
+    line: "{{ item }}"
+    create: yes
+  with_items:
+    - "nameserver 192.168.1.XXX"  # (Ваш DNS сервер)
+    - "search eurostil.ru"
+
+- name: Regenerate resolv.conf
+  command: resolvconf -u
+
+- name: Update DNS nameservers configuration in interfaces file
+  lineinfile:
+    path: /etc/network/interfaces
+    insertafter: '^dns-search {{ dns_search }}'
+    line: "dns-nameservers {{ item }}"
+  loop:
+    - 192.168.0.1
+    - 192.168.0.3
