@@ -1,0 +1,30 @@
+---
+- name: Install dependencies for exacqVisionServer
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ exacqvision_dependencies }}"
+
+- name: Clone exacqVisionServer package from git
+  git:
+    repo: "https://{{ exacqvision_git_username }}:{{ exacqvision_git_password }}@srv-glory.eurostil.ru/dmitry.shelokov/exacqvisionserverpackage.git"
+    dest: /tmp/exacqvisionserverpackage
+    accept_hostkey: yes
+
+- name: Copy initial setup from git to server directory
+  copy:
+    src: /tmp/exacqvisionserverpackage/exacq_initial/
+    dest: "{{ exacqvision_server_dir }}"
+    owner: root
+    group: root
+    mode: '0755'
+    remote_src: yes
+
+#- name: Install exacqVisionServer package
+#  command: dpkg -i /tmp/exacqvisionserverpackage/exacqvisionserver.deb
+#  become: yes
+  
+- name: Restart exacqVision server service
+  service:
+    name: edvrserver
+    state: restarted
