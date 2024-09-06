@@ -1,0 +1,20 @@
+---
+- name: Download Zabbix release package
+  get_url:
+    url: "{{ zabbix_agent_url }}"
+    dest: /tmp/zabbix-release.deb
+  environment:
+    http_proxy: "{{ proxy_url }}"
+
+- name: Install Zabbix release package
+  command: dpkg -i /tmp/zabbix-release.deb
+  become: yes
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install Zabbix agent
+  apt:
+    name: zabbix-agent
+    state: present
