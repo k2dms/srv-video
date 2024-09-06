@@ -1,0 +1,13 @@
+---
+- name: Create proxy configuration for apt
+  copy:
+    content: |
+      Acquire::http::Proxy "{{ proxy_url }}";
+    dest: /etc/apt/apt.conf.d/01proxy
+
+- name: Ensure previous proxy settings are commented out
+  replace:
+    path: /etc/apt/apt.conf.d/01proxy
+    regexp: '^(Acquire::http::Proxy)'
+    replace: ' \1'
+    backup: yes
